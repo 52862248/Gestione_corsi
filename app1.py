@@ -3,6 +3,7 @@ import sqlite3
 
 conn = sqlite3.connect("courses.db", check_same_thread=False)
 c = conn.cursor()
+c.execute("PRAGMA foreign_keys = ON")
 
 # Tabelle
 c.execute("""CREATE TABLE IF NOT EXISTS users(
@@ -17,11 +18,16 @@ id INTEGER PRIMARY KEY,
 title TEXT
 )""")
 
-c.execute("""CREATE TABLE IF NOT EXISTS enrollments(
+c.execute("""
+CREATE TABLE IF NOT EXISTS enrollments(
 id INTEGER PRIMARY KEY,
 user_id INTEGER,
-course_id INTEGER
-)""")
+course_id INTEGER,
+UNIQUE(user_id,course_id),
+FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE,
+FOREIGN KEY(course_id) REFERENCES courses(id) ON DELETE CASCADE
+)
+""")
 
 conn.commit()
 
@@ -56,7 +62,7 @@ else:
         del st.session_state.user
         st.rerun()
 
-    menu = ["Corsi disponibili","I miei corsi"]
+    menu = ["Corsi disponibili","Iscrizioni attivate"]
 
     if role == "admin":
         menu += ["Crea corso", "Lista iscritti", "Gestione utenti"]
@@ -92,7 +98,7 @@ else:
 
     # ----------------------
 
-    if choice == "I miei corsi":
+    if choice == "Iscrizioni attivate":
 
         courses = c.execute("""
         SELECT courses.id, courses.title
@@ -151,18 +157,6 @@ else:
                     st.write("-", u[0])
             else:
                 st.write("--- Nessun iscritto ---")
-
-####### disabilitato
-#      data = c.execute("""
-#        SELECT users.username, courses.title
-#        FROM enrollments
-#        JOIN users ON users.id=enrollments.user_id
-#        JOIN courses ON courses.id=enrollments.course_id
-#        """).fetchall()
-
-#        for row in data:
-#            st.write(row[0], "→", row[1])
-#            ############
 
 
     if choice == "Gestione utenti":
