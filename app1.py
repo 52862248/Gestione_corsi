@@ -5,6 +5,7 @@ from github import Github
 import os
 import time
 
+
 if "last_backup" not in st.session_state:
     st.session_state["last_backup"] = 0
 if "db_changed" not in st.session_state:
@@ -13,7 +14,17 @@ now = time.time()
 def mark_db_changed():
     st.session_state["db_changed"] = True
     st.session_state["last_backup"] = now
-    
+
+#backup dopo 600s dall'ultima modifica
+BACKUP_INTERVAL = 60  # 10 minuti
+st.write(st.session_state["db_changed"]) #visu
+st.write(st.session_state["last_backup"]) #visu
+if st.session_state["db_changed"]:
+    if now - st.session_state["last_backup"] > BACKUP_INTERVAL:
+        backup_to_github()
+        st.session_state["db_changed"] = False
+
+
 def backup_to_github():
 
     token = st.secrets["GITHUB_TOKEN"]
@@ -257,16 +268,8 @@ else:
             backup_to_github()
 
 
-#backup dopo 600s dall'ultima modifica
-BACKUP_INTERVAL = 300  # 10 minuti
 
-st.write(st.session_state["db_changed"])
-st.write(st.session_state["last_backup"])
 
-if st.session_state["db_changed"]:
-    if now - st.session_state["last_backup"] > BACKUP_INTERVAL:
-        backup_to_github()
-        st.session_state["db_changed"] = False
 
 
 
