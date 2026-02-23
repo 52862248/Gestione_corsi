@@ -15,7 +15,7 @@ if "db_changed" not in st.session_state:
 def mark_db_changed():
     st.session_state["db_changed"] = True
     
-def backup_database():
+def backup_to_github():
 
     token = st.secrets["GITHUB_TOKEN"]
     repo_name = st.secrets["REPO_NAME"]
@@ -269,3 +269,4 @@ if st.session_state["db_changed"]:
 
         st.session_state["last_backup"] = now
         st.session_state["db_changed"] = False
+
