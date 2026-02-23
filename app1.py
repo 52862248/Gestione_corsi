@@ -2,6 +2,39 @@ import streamlit as st
 import sqlite3
 import io
 
+from github import Github
+import os
+
+def backup_database():
+
+    token = st.secrets["GITHUB_TOKEN"]
+    repo_name = st.secrets["REPO_NAME"]
+
+    g = Github(token)
+    repo = g.get_repo(repo_name)
+
+    file_path = "courses.db"
+
+    with open(file_path, "rb") as f:
+        content = f.read()
+
+    try:
+        contents = repo.get_contents(file_path)
+
+        repo.update_file(
+            contents.path,
+            "Backup automatico database",
+            content,
+            contents.sha
+        )
+
+    except:
+        repo.create_file(
+            file_path,
+            "Backup iniziale database",
+            content
+        )
+        
 conn = sqlite3.connect("courses.db", check_same_thread=False)
 c = conn.cursor()
 c.execute("PRAGMA foreign_keys = ON")
@@ -95,6 +128,7 @@ else:
                     )
 
                     conn.commit()
+                    backup_database()
                     st.success("Iscritto")
 
     # ----------------------
@@ -121,7 +155,7 @@ else:
                 """,(user[0],course[0]))
 
                 conn.commit()
-
+                backup_database()
                 st.success("Iscrizione cancellata")
 
     # ----------------------
@@ -133,7 +167,7 @@ else:
         if st.button("Salva"):
             c.execute("INSERT INTO courses(title) VALUES (?)",(title,))
             conn.commit()
-
+            backup_database()
             st.success("Corso creato")
 
     # ----------------------
@@ -176,6 +210,7 @@ else:
             )
 
             conn.commit()
+            backup_database()
             st.success("Utente creato")
 
         st.subheader("Elimina utente")
@@ -190,7 +225,7 @@ else:
 
             c.execute("DELETE FROM users WHERE id=?",(user_dict[selected],))
             conn.commit()
-
+            backup_database()
 
             st.warning("Utente eliminato")
 
@@ -210,3 +245,4 @@ else:
             )
 
 #fai un commit sempre
+
