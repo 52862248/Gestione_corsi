@@ -257,7 +257,10 @@ else:
         if st.button("Backup manuale su Github"):
             backup_to_github()
 
+
 BACKUP_INTERVAL = 600  # 10 minuti
+
+st.write(st.session_state["last_backup"])
 
 if st.session_state["db_changed"]:
 
@@ -269,6 +272,7 @@ if st.session_state["db_changed"]:
 
         st.session_state["last_backup"] = now
         st.session_state["db_changed"] = False
+
 
 
 
