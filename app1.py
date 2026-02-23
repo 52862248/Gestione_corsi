@@ -241,7 +241,7 @@ else:
 
         # Pulsante per scaricare il database
         if role == "admin":
-            st.subheader("Scarica database aggiornato")
+            st.subheader("Gestione database")
 
             # apriamo il file in modalità binaria
             with open("courses.db", "rb") as f:
