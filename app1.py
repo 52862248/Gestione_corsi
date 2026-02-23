@@ -191,8 +191,8 @@ else:
             c.execute("DELETE FROM users WHERE id=?",(user_dict[selected],))
             conn.commit()
 
-            st.warning("Utente eliminato")
 
+            st.warning("Utente eliminato")
 
         # Pulsante per scaricare il database
         if role == "admin":
@@ -208,5 +208,3 @@ else:
                 file_name="courses.db",
                 mime="application/octet-stream"
             )
-
-            #te fai un commit che non sbagli!
