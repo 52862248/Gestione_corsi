@@ -208,3 +208,5 @@ else:
                 file_name="courses.db",
                 mime="application/octet-stream"
             )
+
+#fai un commit sempre
