@@ -248,13 +248,13 @@ else:
                 db_bytes = f.read()
 
             st.download_button(
-                label="Scarica courses.db",
+                label="Scarica database",
                 data=db_bytes,
                 file_name="courses.db",
                 mime="application/octet-stream"
             )
 
-        if st.button("Backup manuale"):
+        if st.button("Backup manuale su Github"):
             backup_to_github()
 
 BACKUP_INTERVAL = 600  # 10 minuti
@@ -269,6 +269,7 @@ if st.session_state["db_changed"]:
 
         st.session_state["last_backup"] = now
         st.session_state["db_changed"] = False
+
 
 
 
