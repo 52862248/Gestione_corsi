@@ -5,6 +5,16 @@ import io
 from github import Github
 import os
 
+import time
+
+if "last_backup" not in st.session_state:
+    st.session_state["last_backup"] = 0
+if "db_changed" not in st.session_state:
+    st.session_state["db_changed"] = False
+    
+def mark_db_changed():
+    st.session_state["db_changed"] = True
+    
 def backup_database():
 
     token = st.secrets["GITHUB_TOKEN"]
@@ -128,7 +138,7 @@ else:
                     )
 
                     conn.commit()
-                    backup_database()
+                    mark_db_changed()
                     st.success("Iscritto")
 
     # ----------------------
@@ -155,7 +165,7 @@ else:
                 """,(user[0],course[0]))
 
                 conn.commit()
-                backup_database()
+                mark_db_changed()
                 st.success("Iscrizione cancellata")
 
     # ----------------------
@@ -167,7 +177,7 @@ else:
         if st.button("Salva"):
             c.execute("INSERT INTO courses(title) VALUES (?)",(title,))
             conn.commit()
-            backup_database()
+            mark_db_changed()
             st.success("Corso creato")
 
     # ----------------------
@@ -210,7 +220,7 @@ else:
             )
 
             conn.commit()
-            backup_database()
+            mark_db_changed()
             st.success("Utente creato")
 
         st.subheader("Elimina utente")
@@ -225,7 +235,7 @@ else:
 
             c.execute("DELETE FROM users WHERE id=?",(user_dict[selected],))
             conn.commit()
-            backup_database()
+            mark_db_changed()
 
             st.warning("Utente eliminato")
 
@@ -244,5 +254,18 @@ else:
                 mime="application/octet-stream"
             )
 
-#fai un commit sempre
+        if st.button("Backup manuale"):
+            backup_to_github()
 
+BACKUP_INTERVAL = 600  # 10 minuti
+
+if st.session_state["db_changed"]:
+
+    now = time.time()
+
+    if now - st.session_state["last_backup"] > BACKUP_INTERVAL:
+
+        backup_to_github()
+
+        st.session_state["last_backup"] = now
+        st.session_state["db_changed"] = False
