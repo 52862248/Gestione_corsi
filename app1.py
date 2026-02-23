@@ -190,4 +190,20 @@ else:
             c.execute("DELETE FROM users WHERE id=?",(user_dict[selected],))
             conn.commit()
 
+
             st.warning("Utente eliminato")
+
+        # Pulsante per scaricare il database
+        if role == "admin":
+            st.subheader("Scarica database aggiornato")
+
+            # apriamo il file in modalità binaria
+            with open("courses.db", "rb") as f:
+                db_bytes = f.read()
+
+            st.download_button(
+                label="Scarica courses.db",
+                data=db_bytes,
+                file_name="courses.db",
+                mime="application/octet-stream"
+            )
