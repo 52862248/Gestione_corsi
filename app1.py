@@ -1,19 +1,18 @@
 import streamlit as st
 import sqlite3
 import io
-
 from github import Github
 import os
-
 import time
 
-if "last_backup" not in st.session_state:
-    st.session_state["last_backup"] = 0
-if "db_changed" not in st.session_state:
-    st.session_state["db_changed"] = False
-    
+#if "last_backup" not in st.session_state:
+#    st.session_state["last_backup"] = 0
+#if "db_changed" not in st.session_state:
+#    st.session_state["db_changed"] = False
+now = time.time()
 def mark_db_changed():
     st.session_state["db_changed"] = True
+    st.session_state["last_backup"] = now
     
 def backup_to_github():
 
@@ -258,20 +257,17 @@ else:
             backup_to_github()
 
 
-BACKUP_INTERVAL = 600  # 10 minuti
+#backup dopo 600s dall'ultima modifica
+BACKUP_INTERVAL = 300  # 10 minuti
 
 st.write(st.session_state["db_changed"])
+st.write(st.session_state["last_backup"])
 
 if st.session_state["db_changed"]:
-
-    now = time.time()
-
     if now - st.session_state["last_backup"] > BACKUP_INTERVAL:
-
         backup_to_github()
-
-        st.session_state["last_backup"] = now
         st.session_state["db_changed"] = False
+
 
 
 
