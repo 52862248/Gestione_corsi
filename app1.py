@@ -241,7 +241,7 @@ else:
 
         # Pulsante per scaricare il database
         if role == "admin":
-            st.subheader("Gestione database")
+            st.subheader("Scarica database aggiornato")
 
             # apriamo il file in modalità binaria
             with open("courses.db", "rb") as f:
@@ -269,4 +269,5 @@ if st.session_state["db_changed"]:
 
         st.session_state["last_backup"] = now
         st.session_state["db_changed"] = False
+
 
