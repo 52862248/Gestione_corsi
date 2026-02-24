@@ -252,7 +252,7 @@ else:
 
         corsi = c.execute("SELECT id,title FROM courses").fetchall()
 
-        courses_dict = {u[1]:u[0] for u in courses}
+        courses_dict = {u[1]:u[0] for u in corsi}
 
         selected = st.selectbox("Seleziona corso",courses_dict.keys())
 
@@ -263,6 +263,7 @@ else:
             backup_to_github()
 
             st.warning("Corso eliminato")
+
 
 
 
