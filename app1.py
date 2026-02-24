@@ -247,6 +247,23 @@ else:
         if st.button("Backup manuale su Github"):
             backup_to_github()
 
+        
+        st.subheader("Elimina corso")
+
+        corsi = c.execute("SELECT id,title FROM courses").fetchall()
+
+        courses_dict = {u[1]:u[0] for u in courses}
+
+        selected = st.selectbox("Seleziona corso",courses_dict.keys())
+
+        if st.button("Elimina corso"):
+
+            c.execute("DELETE FROM courses WHERE id=?",(user_dict[selected],))
+            conn.commit()
+            backup_to_github()
+
+            st.warning("Corso eliminato")
+
 
 
 
