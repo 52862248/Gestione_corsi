@@ -99,7 +99,7 @@ else:
     menu = ["Corsi disponibili","Iscrizioni attivate"]
 
     if role == "admin":
-        menu += ["Crea corso", "Lista iscritti", "Gestione utenti"]
+        menu += ["Gestione corsi", "Lista iscritti", "Gestione utenti"]
 
     choice = st.sidebar.selectbox("Menu", menu)
 
@@ -160,7 +160,7 @@ else:
 
     # ----------------------
 
-    if choice == "Crea corso":
+    if choice == "Gestione corsi":
         st.subheader("Crea corso")
         
         title = st.text_input("Titolo corso")
@@ -268,6 +268,7 @@ else:
 
         
        
+
 
 
 
