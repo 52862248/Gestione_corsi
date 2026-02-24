@@ -65,7 +65,7 @@ FOREIGN KEY(course_id) REFERENCES courses(id) ON DELETE CASCADE
 
 conn.commit()
 
-st.title("Gestione corsi")
+st.title("Portale di iscrizione ai corsi")
 
 # LOGIN
 if "user" not in st.session_state:
@@ -268,5 +268,6 @@ else:
 
         
        
+
 
 
