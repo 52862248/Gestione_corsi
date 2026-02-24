@@ -106,7 +106,7 @@ else:
     # ----------------------
 
     if choice == "Corsi disponibili":
-
+        title = st.text_input("Corsi disponibili")
         courses = c.execute("SELECT * FROM courses").fetchall()
 
         for course in courses:
@@ -134,7 +134,7 @@ else:
     # ----------------------
 
     if choice == "Iscrizioni attivate":
-
+        title = st.text_input("Iscrizioni attivate")
         courses = c.execute("""
         SELECT courses.id, courses.title
         FROM courses
@@ -268,6 +268,7 @@ else:
 
         
        
+
 
 
 
