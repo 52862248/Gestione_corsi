@@ -170,6 +170,24 @@ else:
             backup_to_github()
             st.success("Corso creato")
 
+        st.subheader("Elimina corso")
+
+        corsi = c.execute("SELECT id,title FROM courses").fetchall()
+
+        courses_dict = {u[1]:u[0] for u in corsi}
+
+        selected = st.selectbox("Seleziona corso",courses_dict.keys())
+        
+        if st.button("Elimina corso"):
+            
+            c.execute("DELETE FROM courses WHERE id=?",(courses_dict[selected],))
+            #c.execute("DELETE FROM enrollments WHERE course_id=?", courses_dict[selected])
+                        
+            conn.commit()
+            backup_to_github()
+
+            st.warning("Corso eliminato")
+
     # ----------------------
 
     if choice == "Lista iscritti":
@@ -248,36 +266,5 @@ else:
             backup_to_github()
 
         
-        st.subheader("Elimina corso")
-
-        corsi = c.execute("SELECT id,title FROM courses").fetchall()
-
-        courses_dict = {u[1]:u[0] for u in corsi}
-
-        selected = st.selectbox("Seleziona corso",courses_dict.keys())
-        
-        if st.button("Elimina corso"):
-            
-            c.execute("DELETE FROM courses WHERE id=?",(courses_dict[selected],))
-            #c.execute("DELETE FROM enrollments WHERE course_id=?", courses_dict[selected])
-                        
-            conn.commit()
-            backup_to_github()
-
-            st.warning("Corso eliminato")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+       
 
