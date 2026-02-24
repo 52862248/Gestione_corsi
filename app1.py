@@ -161,7 +161,8 @@ else:
     # ----------------------
 
     if choice == "Crea corso":
-
+        st.subheader("Crea corso")
+        
         title = st.text_input("Titolo corso")
 
         if st.button("Salva"):
@@ -267,4 +268,5 @@ else:
 
         
        
+
 
