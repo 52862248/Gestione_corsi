@@ -259,12 +259,13 @@ else:
         if st.button("Elimina corso"):
             
             c.execute("DELETE FROM courses WHERE id=?",(courses_dict[selected],))
-            c.execute("DELETE FROM enrollments WHERE course_id=?", courses_dict[selected])
+            #c.execute("DELETE FROM enrollments WHERE course_id=?", courses_dict[selected])
                         
             conn.commit()
             backup_to_github()
 
             st.warning("Corso eliminato")
+
 
 
 
