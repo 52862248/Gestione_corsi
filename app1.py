@@ -234,7 +234,7 @@ else:
 
         st.subheader("Elimina utente")
 
-        users = c.execute("SELECT id,username FROM users").fetchall()
+        users = c.execute("SELECT id,username FROM users WHERE role != 'admin'").fetchall()
 
         user_dict = {u[1]:u[0] for u in users}
 
@@ -268,6 +268,7 @@ else:
 
         
        
+
 
 
 
